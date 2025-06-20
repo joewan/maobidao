@@ -16,16 +16,26 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            padding-top: 70px;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            padding-top: 70px;
+            padding: 2rem 0;
         }
 
         .container {
             text-align: center;
             position: relative;
             z-index: 2;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .brand-title {
@@ -203,13 +213,11 @@
 
         /* 底部样式 */
         .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
             width: 100%;
             text-align: center;
             padding: 20px;
             z-index: 3;
+            margin-top: auto;
         }
 
         .domain-info {
@@ -268,6 +276,10 @@
 
         /* 响应式设计 */
         @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem 0;
+            }
+
             .brand-title {
                 font-size: clamp(2.5rem, 10vw, 4rem);
                 margin-bottom: 1rem;
@@ -297,6 +309,10 @@
         }
 
         @media (max-width: 480px) {
+            .main-content {
+                padding: 0.5rem 0;
+            }
+
             .brand-title {
                 font-size: clamp(2rem, 8vw, 3rem);
             }
@@ -314,10 +330,41 @@
                 padding: 8px 12px;
                 gap: 6px;
             }
+
+            /* 文章区域移动端适配 */
+            .articles-section {
+                margin-top: 3rem;
+            }
+
+            .articles-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                max-width: 350px;
+            }
+
+            .article-card {
+                padding: 1.5rem;
+            }
+
+            .article-icon {
+                font-size: 2rem;
+            }
+
+            .article-title {
+                font-size: 1.1rem;
+            }
+
+            .article-desc {
+                font-size: 0.85rem;
+            }
         }
 
         /* 横屏适配 */
         @media (max-height: 500px) and (orientation: landscape) {
+            .main-content {
+                padding: 0.5rem 0;
+            }
+
             .brand-title {
                 font-size: clamp(1.5rem, 6vh, 2.5rem);
                 margin-bottom: 0.5rem;
@@ -331,12 +378,107 @@
             .footer {
                 padding: 10px;
             }
+
+            .articles-section {
+                margin-top: 2rem;
+            }
+
+            .articles-grid {
+                gap: 1rem;
+            }
+
+            .article-card {
+                padding: 1rem;
+            }
+
+            .article-icon {
+                font-size: 1.8rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .article-title {
+                font-size: 1rem;
+            }
+
+            .article-desc {
+                font-size: 0.8rem;
+            }
         }
 
         /* 鼠标悬停效果 */
         .brand-title:hover {
             transform: scale(1.05);
             transition: transform 0.3s ease;
+        }
+
+        /* 文章入口区域 */
+        .articles-section {
+            margin-top: 4rem;
+            animation: fadeInUp 1s ease-out 1.5s both;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .article-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .article-card:hover::before {
+            left: 100%;
+        }
+
+        .article-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .article-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .article-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .article-desc {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+            line-height: 1.4;
         }
 
         /* 移动端菜单 */
@@ -390,14 +532,15 @@
                 <a href="index.html" class="nav-link">首页</a>
                 <a href="about.html" class="nav-link">关于我们</a>
                 <a href="products.html" class="nav-link">产品</a>
-                <a href="maobubu.html" class="nav-link">猫布布</a>
                 <a href="#contact" class="nav-link">联系</a>
             </nav>
             <button class="mobile-menu-toggle">☰</button>
         </div>
     </header>
 
-    <div class="container">
+    <!-- 主要内容区域 -->
+    <main class="main-content">
+        <div class="container">
         <h1 class="brand-title">
             猫布布
         </h1>
@@ -411,7 +554,29 @@
         </p>
 
         <div class="decorative-line"></div>
-    </div>
+
+        <!-- 文章入口区域 -->
+        <div class="articles-section">
+            <div class="articles-grid">
+                <div class="article-card" data-url="about.html">
+                    <div class="article-icon">🤖</div>
+                    <h3 class="article-title">关于我们</h3>
+                    <p class="article-desc">了解AI驱动的创新团队</p>
+                </div>
+                <div class="article-card" data-url="products.html">
+                    <div class="article-icon">👕</div>
+                    <h3 class="article-title">品牌产品</h3>
+                    <p class="article-desc">探索猫笔刀时尚系列</p>
+                </div>
+                <div class="article-card" data-url="index.html">
+                    <div class="article-icon">🐱</div>
+                    <h3 class="article-title">猫布布</h3>
+                    <p class="article-desc">温暖陪伴每一天</p>
+                </div>
+            </div>
+        </div>
+        </div>
+    </main>
 
     <footer class="footer">
         <p class="domain-info">© 2025 猫布布® 版权所有 | www.maobubu.com</p>
@@ -483,6 +648,35 @@
                     header.style.background = 'rgba(0, 0, 0, 0.1)';
                 }
             }
+        });
+
+        // 文章卡片点击事件
+        document.addEventListener('DOMContentLoaded', function() {
+            const articleCards = document.querySelectorAll('.article-card');
+
+            articleCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const url = this.getAttribute('data-url');
+                    if (url) {
+                        // 添加点击动画效果
+                        this.style.transform = 'translateY(-10px) scale(0.95)';
+                        setTimeout(() => {
+                            window.location.href = url;
+                        }, 200);
+                    }
+                });
+
+                // 添加键盘支持
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+
+                // 使卡片可聚焦
+                card.setAttribute('tabindex', '0');
+            });
         });
     </script>
 </body>
