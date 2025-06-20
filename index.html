@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猫笔刀®</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-title {
+            font-size: clamp(4rem, 12vw, 8rem);
+            font-weight: 900;
+            color: #ffffff;
+            text-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
+            letter-spacing: 0.1em;
+            position: relative;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        .trademark {
+            font-size: 0.5em;
+            vertical-align: super;
+            opacity: 0.9;
+        }
+
+        .subtitle {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease-out 0.5s both;
+            position: relative;
+            height: 3em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rotating-text {
+            position: relative;
+        }
+
+        .text-item {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            white-space: nowrap;
+        }
+
+        .text-item.active {
+            opacity: 1;
+        }
+
+        .decorative-line {
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffffff, transparent);
+            margin: 0 auto;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* 背景装饰 */
+        .bg-decoration {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .bg-decoration::before,
+        .bg-decoration::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .bg-decoration::before {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .bg-decoration::after {
+            bottom: 10%;
+            right: 10%;
+            animation-delay: 3s;
+        }
+
+        /* 动画效果 */
+        @keyframes glow {
+            0% {
+                text-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            }
+            100% {
+                text-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.5;
+                transform: scaleX(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scaleX(1.1);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .brand-title {
+                margin-bottom: 1.5rem;
+            }
+
+            .subtitle {
+                margin-bottom: 2rem;
+            }
+        }
+
+        /* 鼠标悬停效果 */
+        .brand-title:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+
+        /* 底部样式 */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+            z-index: 3;
+        }
+
+        .domain-info {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            animation: fadeInUp 1s ease-out 1s both;
+        }
+
+        .domain-info:hover {
+            color: rgba(255, 255, 255, 0.9);
+            transition: color 0.3s ease;
+        }
+
+        /* 右上角菜单样式 */
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            padding: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger {
+            width: 25px;
+            height: 20px;
+            position: relative;
+            transform: rotate(0deg);
+            transition: 0.3s ease-in-out;
+        }
+
+        .hamburger span {
+            display: block;
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 1px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: 0.25s ease-in-out;
+        }
+
+        .hamburger span:nth-child(1) {
+            top: 0px;
+        }
+
+        .hamburger span:nth-child(2) {
+            top: 9px;
+        }
+
+        .hamburger span:nth-child(3) {
+            top: 18px;
+        }
+
+        /* 菜单激活状态 */
+        .menu-toggle.active .hamburger span:nth-child(1) {
+            top: 9px;
+            transform: rotate(135deg);
+        }
+
+        .menu-toggle.active .hamburger span:nth-child(2) {
+            opacity: 0;
+            left: -60px;
+        }
+
+        .menu-toggle.active .hamburger span:nth-child(3) {
+            top: 9px;
+            transform: rotate(-135deg);
+        }
+
+        /* 菜单面板 */
+        .menu-panel {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 999;
+            transition: right 0.3s ease-in-out;
+            padding-top: 80px;
+        }
+
+        .menu-panel.active {
+            right: 0;
+        }
+
+        .menu-content {
+            padding: 20px;
+        }
+
+        .menu-item {
+            padding: 15px 0;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            font-weight: 300;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.05em;
+        }
+
+        .menu-item:hover {
+            color: rgba(255, 255, 255, 1);
+            padding-left: 10px;
+            border-bottom-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        /* 改进的移动端适配 */
+        @media (max-width: 768px) {
+            .brand-title {
+                font-size: clamp(2.5rem, 10vw, 4rem);
+                margin-bottom: 1rem;
+            }
+
+            .subtitle {
+                font-size: clamp(1rem, 4vw, 1.5rem);
+                margin-bottom: 1.5rem;
+                padding: 0 20px;
+            }
+
+            .decorative-line {
+                width: 150px;
+            }
+
+            .domain-info {
+                font-size: 0.8rem;
+                padding: 0 20px;
+            }
+
+            .menu-toggle {
+                top: 15px;
+                right: 15px;
+                padding: 8px;
+            }
+
+            .hamburger {
+                width: 22px;
+                height: 18px;
+            }
+
+            .menu-panel {
+                width: 100vw;
+                right: -100vw;
+            }
+
+            .menu-panel.active {
+                right: 0;
+            }
+
+            /* 移动端禁用鼠标跟随效果 */
+            .container {
+                transform: none !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .brand-title {
+                font-size: clamp(2rem, 8vw, 3rem);
+            }
+
+            .subtitle {
+                font-size: clamp(0.9rem, 3.5vw, 1.2rem);
+                line-height: 1.4;
+            }
+
+            .footer {
+                padding: 15px;
+            }
+
+            .menu-item {
+                font-size: 1rem;
+                padding: 12px 0;
+            }
+        }
+
+        /* 横屏适配 */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .brand-title {
+                font-size: clamp(1.5rem, 6vh, 2.5rem);
+                margin-bottom: 0.5rem;
+            }
+
+            .subtitle {
+                font-size: clamp(0.8rem, 3vh, 1.2rem);
+                margin-bottom: 1rem;
+            }
+
+            .footer {
+                padding: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+        <div class="bg-decoration"></div>
+
+    <!-- 右上角菜单 -->
+    <div class="menu-toggle">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <!-- 菜单面板 -->
+    <div class="menu-panel">
+        <div class="menu-content">
+            <div class="menu-item">关于我们</div>
+            <div class="menu-item">产品介绍</div>
+            <div class="menu-item">猫布布</div>
+            <div class="menu-item">联系方式</div>
+            <div class="menu-item">用户反馈</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 class="brand-title">
+            猫笔刀<!--span class="trademark">®</span>-->
+        </h1>
+
+        <p class="subtitle rotating-text">
+            <span class="text-item active">创意与锋芒的完美结合</span>
+            <span class="text-item">创新源于不断的思考与实践</span>
+            <span class="text-item">每一次尝试都是成长的机会</span>
+            <span class="text-item">专注当下，成就未来</span>
+            <span class="text-item">简单的事情做到极致就是不简单</span>
+        </p>
+
+        <div class="decorative-line"></div>
+    </div>
+
+    <footer class="footer">
+        <p class="domain-info">© 2025 猫笔刀 版权所有 | www.maobidao.com</p>
+    </footer>
+
+    <script>
+        // 添加交互效果
+        document.addEventListener('mousemove', function(e) {
+            const container = document.querySelector('.container');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+
+            container.style.transform = `translate(${(x - 0.5) * 20}px, ${(y - 0.5) * 20}px)`;
+        });
+
+        // 页面加载动画
+        window.addEventListener('load', function() {
+            document.querySelector('.brand-title').style.animation = 'glow 3s ease-in-out infinite alternate, fadeInUp 1s ease-out both';
+        });
+
+        // 文字轮播效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const textItems = document.querySelectorAll('.text-item');
+            let currentIndex = 0;
+
+            function rotateText() {
+                textItems[currentIndex].classList.remove('active');
+                currentIndex = (currentIndex + 1) % textItems.length;
+                textItems[currentIndex].classList.add('active');
+            }
+
+            // 每4秒切换一次文字
+            setInterval(rotateText, 4000);
+        });
+
+        // 菜单功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const menuPanel = document.querySelector('.menu-panel');
+            const menuItems = document.querySelectorAll('.menu-item');
+
+            // 菜单开关
+            menuToggle.addEventListener('click', function() {
+                menuToggle.classList.toggle('active');
+                menuPanel.classList.toggle('active');
+            });
+
+                        // 点击菜单项关闭菜单
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    menuToggle.classList.remove('active');
+                    menuPanel.classList.remove('active');
+
+                    // 根据菜单项内容进行不同操作
+                    const itemText = this.textContent;
+                    console.log('点击了:', itemText);
+
+                    if (itemText === '关于我们') {
+                        // 跳转到关于我们页面
+                        window.location.href = 'about.html';
+                    } else if (itemText === '产品介绍') {
+                        // 跳转到产品页面
+                        window.location.href = 'products.html';
+                    } else if (itemText === '猫布布') {
+                        // 跳转到猫布布页面
+                        window.location.href = 'maobubu.html';
+                    }
+                    // 其他菜单项可以在这里添加相应功能
+                });
+            });
+
+            // 点击菜单面板外部关闭菜单
+            document.addEventListener('click', function(e) {
+                if (!menuToggle.contains(e.target) && !menuPanel.contains(e.target)) {
+                    menuToggle.classList.remove('active');
+                    menuPanel.classList.remove('active');
+                }
+            });
+
+            // ESC键关闭菜单
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    menuToggle.classList.remove('active');
+                    menuPanel.classList.remove('active');
+                }
+            });
+        });
+
+        // 改进移动端交互
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检测触摸设备
+            function isTouchDevice() {
+                return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            }
+
+            // 如果是触摸设备，禁用鼠标跟随效果
+            if (isTouchDevice()) {
+                const mouseMoveHandler = document.querySelector('script').textContent.includes('mousemove');
+                if (mouseMoveHandler) {
+                    document.removeEventListener('mousemove', arguments.callee);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

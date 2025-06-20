@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猫布布® - 品牌产品</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 头部导航 */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 15px 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 300;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #ffffff;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 60px 20px;
+            margin-bottom: 60px;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 900;
+            color: #ffffff;
+            text-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+            animation: fadeInUp 1s ease-out both;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        /* 产品网格 */
+        .products-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1s ease-out both;
+        }
+
+        .product-card:nth-child(1) { animation-delay: 0.1s; }
+        .product-card:nth-child(2) { animation-delay: 0.2s; }
+        .product-card:nth-child(3) { animation-delay: 0.3s; }
+        .product-card:nth-child(4) { animation-delay: 0.4s; }
+        .product-card:nth-child(5) { animation-delay: 0.5s; }
+        .product-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .product-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        .product-description {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 25px;
+        }
+
+        .product-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: #ffffff;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .product-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 特色区域 */
+        .features-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            padding: 60px 20px;
+            margin: 60px 0;
+        }
+
+        .features-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .features-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 40px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-item {
+            padding: 30px 20px;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        .feature-text {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        /* 底部 */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .footer-text {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* 动画效果 */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .hero-title {
+                margin-bottom: 0.5rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .product-card {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 15px;
+            }
+
+            .hero-section {
+                padding: 40px 15px;
+            }
+
+            .products-container {
+                padding: 0 15px;
+            }
+
+            .product-card {
+                padding: 20px;
+            }
+        }
+
+        /* 移动端菜单 */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 20px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .nav-links.active {
+                transform: translateX(0);
+                display: flex;
+            }
+
+            .nav-link {
+                padding: 15px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">猫笔刀</a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">首页</a>
+                <a href="about.html" class="nav-link">关于我们</a>
+                <a href="products.html" class="nav-link">产品</a>
+                <a href="maobubu.html" class="nav-link">猫布布</a>
+                <a href="#contact" class="nav-link">联系</a>
+            </nav>
+            <button class="mobile-menu-toggle">☰</button>
+        </div>
+    </header>
+
+    <!-- 主要内容 -->
+    <main class="main-content">
+        <!-- 英雄区域 -->
+        <section class="hero-section">
+            <h1 class="hero-title">猫布布® 品牌服饰</h1>
+            <p class="hero-subtitle">创意与锋芒的时尚表达</p>
+        </section>
+
+        <!-- 产品展示 -->
+        <section class="products-container">
+            <div class="products-grid">
+                <div class="product-card">
+                    <span class="product-icon">👕</span>
+                    <h3 class="product-name">经典Logo T恤</h3>
+                    <p class="product-description">100%纯棉材质，简约设计，舒适透气，展现品牌经典魅力</p>
+                    <div class="product-price">¥199</div>
+                    <a href="#" class="product-button">立即购买</a>
+                </div>
+
+                <div class="product-card">
+                    <span class="product-icon">🧥</span>
+                    <h3 class="product-name">潮流卫衣</h3>
+                    <p class="product-description">加厚保暖，时尚剪裁，多色可选，秋冬必备单品</p>
+                    <div class="product-price">¥299</div>
+                    <a href="#" class="product-button">立即购买</a>
+                </div>
+
+                <div class="product-card">
+                    <span class="product-icon">👟</span>
+                    <h3 class="product-name">休闲运动鞋</h3>
+                    <p class="product-description">轻量化设计，舒适减震，适合日常穿搭，彰显个性态度</p>
+                    <div class="product-price">¥399</div>
+                    <a href="#" class="product-button">立即购买</a>
+                </div>
+
+                <div class="product-card">
+                    <span class="product-icon">🧢</span>
+                    <h3 class="product-name">品牌棒球帽</h3>
+                    <p class="product-description">可调节设计，优质面料，简约百搭，户外时尚首选</p>
+                    <div class="product-price">¥129</div>
+                    <a href="#" class="product-button">立即购买</a>
+                </div>
+
+                <div class="product-card">
+                    <span class="product-icon">👖</span>
+                    <h3 class="product-name">休闲牛仔裤</h3>
+                    <p class="product-description">优质牛仔布料，舒适版型，耐磨耐洗，经典不过时</p>
+                    <div class="product-price">¥259</div>
+                    <a href="#" class="product-button">立即购买</a>
+                </div>
+
+                <div class="product-card">
+                    <span class="product-icon">🎒</span>
+                    <h3 class="product-name">多功能背包</h3>
+                    <p class="product-description">大容量设计，多层收纳，防水面料，学习工作两相宜</p>
+                    <div class="product-price">¥199</div>
+                    <a href="#" class="product-button">立即购买</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 品牌特色 -->
+        <section class="features-section">
+            <div class="features-container">
+                <h2 class="features-title">品牌特色</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <span class="feature-icon">✨</span>
+                        <h3 class="feature-title">原创设计</h3>
+                        <p class="feature-text">每一件产品都融入独特的创意元素，展现个性化的时尚态度</p>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🏆</span>
+                        <h3 class="feature-title">品质保证</h3>
+                        <p class="feature-text">严选优质面料，精工细作，确保每一件产品的卓越品质</p>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🚚</span>
+                        <h3 class="feature-title">快速配送</h3>
+                        <p class="feature-text">全国包邮，48小时内发货，让您尽快收到心仪的产品</p>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">💎</span>
+                        <h3 class="feature-title">限量发售</h3>
+                        <p class="feature-text">部分产品限量生产，彰显独特品味，成为时尚焦点</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部 -->
+    <footer class="footer">
+        <p class="footer-text">© 2025 猫笔刀® 版权所有 | www.maobidao.com</p>
+    </footer>
+
+    <script>
+        // 移动端菜单切换
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            mobileToggle.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+
+            // 点击菜单项关闭菜单
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.classList.remove('active');
+                });
+            });
+        });
+
+        // 滚动时改变导航栏透明度
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(0, 0, 0, 0.2)';
+            } else {
+                header.style.background = 'rgba(0, 0, 0, 0.1)';
+            }
+        });
+
+        // 产品按钮点击事件
+        document.querySelectorAll('.product-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // 添加点击效果
+                this.style.transform = 'translateY(-2px) scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'translateY(-2px)';
+                }, 150);
+
+                // 这里可以添加购买逻辑
+                const productName = this.closest('.product-card').querySelector('.product-name').textContent;
+                alert(`即将购买: ${productName}\n（此为演示功能）`);
+            });
+        });
+
+        // 页面加载动画
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
